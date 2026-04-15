@@ -1,0 +1,14 @@
+# *
+User-agent: *
+Allow: /
+
+# *
+User-agent: *
+Disallow: /admin
+Disallow: /secret
+
+# Host
+Host: https://www.chadmathew.com
+
+# Sitemaps
+Sitemap: https://www.chadmathew.com/sitemap.xml
