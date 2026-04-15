@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Enable optimized font loading
-  optimizeFonts: true,
+
   
   // Configure headers for font files (iOS compatibility)
   async headers() {
