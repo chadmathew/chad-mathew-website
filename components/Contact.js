@@ -19,6 +19,11 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      alert("Please fill all fields");
+      return;
+    }
+
     try {
       const response = await fetch("https://formsubmit.co/contactme@chadmathew.com", {
         method: "POST",
@@ -26,7 +31,7 @@ const Contact = () => {
       });
 
       if (response.ok) {
-        alert("Message sent!");
+        alert("Message sent successfully!");
         setFormData({
           name: "",
           email: "",
@@ -34,41 +39,96 @@ const Contact = () => {
           message: "",
         });
       } else {
-        alert("Failed to send.");
+        alert("Failed to send message.");
       }
-    } catch {
-      alert("Error sending message.");
+    } catch (error) {
+      alert("Something went wrong.");
     }
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ padding: "40px", maxWidth: "900px", margin: "0 auto", fontFamily: "Arial" }}>
       <h1 style={{ fontSize: "48px", marginBottom: "20px" }}>CONTACT</h1>
 
-      {/* Image (SAFE version using <img>) */}
+      {/* Image */}
       <img
         src="/images/contactForm.webp"
         alt="Chad Mathew"
-        style={{ width: "100%", borderRadius: "10px", marginBottom: "20px" }}
+        style={{
+          width: "100%",
+          borderRadius: "12px",
+          marginBottom: "30px",
+        }}
       />
 
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <input name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
-        <input name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
-        <input name="subject" value={formData.subject} onChange={handleChange} placeholder="Subject" />
-        <textarea name="message" value={formData.message} onChange={handleChange} placeholder="Message" />
+      {/* Form */}
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+        }}
+      >
+        <input
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Your Name"
+          style={{ padding: "12px", borderRadius: "6px", border: "1px solid #ccc" }}
+        />
 
-        <button type="submit">Send Message</button>
+        <input
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Your Email"
+          style={{ padding: "12px", borderRadius: "6px", border: "1px solid #ccc" }}
+        />
+
+        <input
+          name="subject"
+          value={formData.subject}
+          onChange={handleChange}
+          placeholder="Subject"
+          style={{ padding: "12px", borderRadius: "6px", border: "1px solid #ccc" }}
+        />
+
+        <textarea
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          placeholder="Your Message"
+          rows={5}
+          style={{ padding: "12px", borderRadius: "6px", border: "1px solid #ccc" }}
+        />
+
+        <button
+          type="submit"
+          style={{
+            padding: "14px",
+            background: "#0B3D2E",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          Send Message
+        </button>
       </form>
 
-      <div style={{ marginTop: "30px" }}>
-        <FaImdb style={{ marginRight: "10px" }} />
-        <FaEnvelope />
-      </div>
+      {/* Footer */}
+      <div style={{ marginTop: "40px", textAlign: "center" }}>
+        <div style={{ marginBottom: "10px" }}>
+          <FaImdb style={{ marginRight: "10px" }} />
+          <FaEnvelope />
+        </div>
 
-      <p style={{ marginTop: "20px", fontSize: "12px" }}>
-        Made with <FaHeart style={{ color: "red" }} /> by Mateen Ahmad
-      </p>
+        <p style={{ fontSize: "12px", color: "#666" }}>
+          Made with <FaHeart style={{ color: "red", margin: "0 5px" }} /> by Mateen Ahmad
+        </p>
+      </div>
     </div>
   );
 };
