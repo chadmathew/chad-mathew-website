@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { FaEnvelope, FaHeart } from "react-icons/fa";
-import {
-  SiImdb,
-  SiBackstage,
-  SiStarnow,
-  SiCasting,
-  SiCastingnetworks,
-} from "react-icons/si";
+import { FaEnvelope, FaHeart, FaImdb } from "react-icons/fa";
 import {
   HiOutlineGlobeAlt,
   HiOutlineSparkles,
