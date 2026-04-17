@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import { FaEnvelope, FaHeart, FaImdb } from "react-icons/fa";
 
 const Contact = () => {
@@ -11,27 +10,22 @@ const Contact = () => {
   });
 
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
-    }));
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-      alert("Please fill all fields");
-      return;
-    }
-
     try {
-      const res = await fetch("https://formsubmit.co/contactme@chadmathew.com", {
+      const response = await fetch("https://formsubmit.co/contactme@chadmathew.com", {
         method: "POST",
         body: new FormData(e.target),
       });
 
-      if (res.ok) {
+      if (response.ok) {
         alert("Message sent!");
         setFormData({
           name: "",
@@ -40,81 +34,41 @@ const Contact = () => {
           message: "",
         });
       } else {
-        throw new Error();
+        alert("Failed to send.");
       }
     } catch {
-      alert("Something went wrong.");
+      alert("Error sending message.");
     }
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-5xl font-bold mb-8">CONTACT</h1>
+    <div style={{ padding: "40px", maxWidth: "800px", margin: "0 auto" }}>
+      <h1 style={{ fontSize: "48px", marginBottom: "20px" }}>CONTACT</h1>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Image */}
-        <div>
-          <Image
-            src="/images/contactForm.webp"
-            alt="Chad Mathew"
-            width={400}
-            height={600}
-            className="rounded-xl w-full h-auto"
-          />
-        </div>
+      {/* Image (SAFE version using <img>) */}
+      <img
+        src="/images/contactForm.webp"
+        alt="Chad Mathew"
+        style={{ width: "100%", borderRadius: "10px", marginBottom: "20px" }}
+      />
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Full Name"
-            className="w-full p-3 border rounded"
-          />
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <input name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
+        <input name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
+        <input name="subject" value={formData.subject} onChange={handleChange} placeholder="Subject" />
+        <textarea name="message" value={formData.message} onChange={handleChange} placeholder="Message" />
 
-          <input
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className="w-full p-3 border rounded"
-          />
+        <button type="submit">Send Message</button>
+      </form>
 
-          <input
-            name="subject"
-            value={formData.subject}
-            onChange={handleChange}
-            placeholder="Subject"
-            className="w-full p-3 border rounded"
-          />
-
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            placeholder="Your message..."
-            className="w-full p-3 border rounded"
-            rows={4}
-          />
-
-          <button className="w-full bg-black text-white py-3 rounded">
-            Send Message
-          </button>
-        </form>
+      <div style={{ marginTop: "30px" }}>
+        <FaImdb style={{ marginRight: "10px" }} />
+        <FaEnvelope />
       </div>
 
-      {/* Footer */}
-      <div className="text-center mt-10 text-sm">
-        <p>
-          Made with <FaHeart className="inline text-red-500 mx-1" /> by Mateen Ahmad
-        </p>
-
-        <div className="flex justify-center gap-4 mt-4 text-xl">
-          <FaImdb />
-          <FaEnvelope />
-        </div>
-      </div>
+      <p style={{ marginTop: "20px", fontSize: "12px" }}>
+        Made with <FaHeart style={{ color: "red" }} /> by Mateen Ahmad
+      </p>
     </div>
   );
 };
