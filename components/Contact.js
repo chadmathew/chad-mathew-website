@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { FaEnvelope, FaHeart, FaImdb } from "react-icons/fa";
+import Image from "next/image";
+import { FaEnvelope, FaHeart } from "react-icons/fa";
+import { SiImdb } from "react-icons/si";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -19,16 +21,35 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-      alert("Please fill all fields");
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.subject ||
+      !formData.message
+    ) {
+      alert("Please fill all required fields");
       return;
     }
 
     try {
-      const response = await fetch("https://formsubmit.co/contactme@chadmathew.com", {
-        method: "POST",
-        body: new FormData(e.target),
-      });
+      const formSubmitData = new FormData();
+      formSubmitData.append("name", formData.name);
+      formSubmitData.append("email", formData.email);
+      formSubmitData.append("subject", formData.subject);
+      formSubmitData.append("message", formData.message);
+      formSubmitData.append(
+        "_subject",
+        `New contact form submission from ${formData.name}`
+      );
+      formSubmitData.append("_captcha", "false");
+
+      const response = await fetch(
+        "https://formsubmit.co/contactme@chadmathew.com",
+        {
+          method: "POST",
+          body: formSubmitData,
+        }
+      );
 
       if (response.ok) {
         alert("Message sent successfully!");
@@ -39,7 +60,7 @@ const Contact = () => {
           message: "",
         });
       } else {
-        alert("Failed to send message.");
+        throw new Error("Failed");
       }
     } catch (error) {
       alert("Something went wrong.");
@@ -47,87 +68,64 @@ const Contact = () => {
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "900px", margin: "0 auto", fontFamily: "Arial" }}>
-      <h1 style={{ fontSize: "48px", marginBottom: "20px" }}>CONTACT</h1>
+    <div className="w-full px-4 max-w-5xl mx-auto">
+      <h1 className="text-5xl font-bold mb-6">CONTACT</h1>
 
-      {/* Image */}
-      <img
-        src="/images/contactForm.webp"
-        alt="Chad Mathew"
-        style={{
-          width: "100%",
-          borderRadius: "12px",
-          marginBottom: "30px",
-        }}
-      />
-
-      {/* Form */}
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px",
-        }}
-      >
-        <input
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Your Name"
-          style={{ padding: "12px", borderRadius: "6px", border: "1px solid #ccc" }}
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Image */}
+        <Image
+          src="/images/contactForm.webp"
+          alt="Chad Mathew"
+          width={400}
+          height={600}
+          className="rounded-xl"
         />
 
-        <input
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Your Email"
-          style={{ padding: "12px", borderRadius: "6px", border: "1px solid #ccc" }}
-        />
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Name"
+            className="w-full border p-3 rounded"
+          />
 
-        <input
-          name="subject"
-          value={formData.subject}
-          onChange={handleChange}
-          placeholder="Subject"
-          style={{ padding: "12px", borderRadius: "6px", border: "1px solid #ccc" }}
-        />
+          <input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className="w-full border p-3 rounded"
+          />
 
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          placeholder="Your Message"
-          rows={5}
-          style={{ padding: "12px", borderRadius: "6px", border: "1px solid #ccc" }}
-        />
+          <input
+            name="subject"
+            value={formData.subject}
+            onChange={handleChange}
+            placeholder="Subject"
+            className="w-full border p-3 rounded"
+          />
 
-        <button
-          type="submit"
-          style={{
-            padding: "14px",
-            background: "#0B3D2E",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
-        >
-          Send Message
-        </button>
-      </form>
+          <textarea
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            placeholder="Message"
+            className="w-full border p-3 rounded"
+          />
+
+          <button className="w-full bg-black text-white p-3 rounded">
+            Send Message
+          </button>
+        </form>
+      </div>
 
       {/* Footer */}
-      <div style={{ marginTop: "40px", textAlign: "center" }}>
-        <div style={{ marginBottom: "10px" }}>
-          <FaImdb style={{ marginRight: "10px" }} />
-          <FaEnvelope />
-        </div>
-
-        <p style={{ fontSize: "12px", color: "#666" }}>
-          Made with <FaHeart style={{ color: "red", margin: "0 5px" }} /> by Mateen Ahmad
-        </p>
+      <div className="text-center mt-10">
+        <SiImdb className="inline text-3xl mr-2" />
+        <FaEnvelope className="inline text-2xl mr-2" />
+        <FaHeart className="inline text-red-500" />
       </div>
     </div>
   );
