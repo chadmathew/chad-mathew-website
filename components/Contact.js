@@ -225,7 +225,7 @@ const Contact = () => {
             className="w-10 h-10 sm:w-12 sm:h-12 bg-[#F5C518] text-black rounded-full flex items-center justify-center hover:bg-[#F5C518]/80 hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl flex-shrink-0"
             title="IMDb"
           >
-            <SiImdb className="w-6 h-6 font-bold" />
+           <FaImdb className="w-6 h-6 font-bold" /> 
           </a>
 
           <a
